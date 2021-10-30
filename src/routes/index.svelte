@@ -4,14 +4,14 @@
 	import Token from '../artifacts/contracts/Token.sol/TrevToken.json';
 
 	// Local
-	// const greeterAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
-	// const tokenAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
+	const greeterAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
+	const tokenAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
 
 	// Ropsten
-	const greeterAddress = '0x05Fc26470dA98455cc5C81A169Adc114930E4de0';
-	const tokenAddress = '0x53c57e8E7d0B267209010ef385882718d4D08b26';
+	// const greeterAddress = '0x05Fc26470dA98455cc5C81A169Adc114930E4de0';
+	// const tokenAddress = '0x53c57e8E7d0B267209010ef385882718d4D08b26';
 
-	let greeting = "Hi, it's Trevor!";
+	let greeting = '';
 	let userAccount = '';
 	let amount = null;
 
@@ -33,10 +33,10 @@
 		}
 	}
 
-	let promise = fetchGreeting();
+	let msgPromise = fetchGreeting();
 
 	function handleFetchGreeting() {
-		promise = fetchGreeting();
+		msgpromise = fetchGreeting();
 	}
 
 	async function getBalance() {
@@ -81,36 +81,38 @@
 			const contract = new ethers.Contract(tokenAddress, Token.abi, signer);
 			const transation = await contract.transfer(userAccount, amount);
 			await transation.wait();
-			console.log(`${amount} Coins successfully sent to ${userAccount}`);
+			// console.log(`${amount} Coins successfully sent to ${userAccount}`);
+			amount = null;
+			userAccount = '';
 		}
 	}
 </script>
 
 <div class="flex flex-col items-center justify-center">
-	<div class="wow pb-8">
-		<p class=" pb-1 ">Guaranteed to 10x 🥳</p>
-		<p class=" pb-1 ">Moonshot 🚀</p>
-		<p class=" pb-4 ">So much wow 🤯</p>
-	</div>
+	<p class="text-center">Token address:</p>
+	<p class="text-center">0x53c57e8E7d0B267209010ef385882718d4D08b26</p>
+	<br />
 	<main class=" flex items-center justify-center">
 		<div class="msg flex flex-col">
 			<button class="btn" on:click={setGreeting}>Set Message</button>
 			<input bind:value={greeting} placeholder="message..." />
 			<button class="btn" on:click={handleFetchGreeting}>Get Message</button>
 		</div>
+
 		<div class="tokens flex flex-col">
-			<button class="btn" on:click={handleGetBalance}> Get TVT Balance </button>
-			<button class="btn" on:click={sendCoins}> Send TVT </button>
+			<button class="btn" on:click={handleGetBalance}> Get TVC Balance </button>
+			<button class="btn" on:click={sendCoins}> Send TVC </button>
 			<input bind:value={userAccount} placeholder="address..." />
 			<input bind:value={amount} placeholder="amount..." />
 		</div>
 	</main>
+	<br />
 	<div id="message">
-		{#await promise}
+		{#await msgPromise}
 			<p>...waiting</p>
 		{:then message}
 			{#if message === undefined}
-				<p>No message here!</p>
+				<p>No message!</p>
 			{:else}
 				<p>Message: {message}</p>
 			{/if}
@@ -118,19 +120,25 @@
 			<p style="color: red">{error.message}</p>
 		{/await}
 	</div>
+
 	<div id="amount">
 		{#await balPromise}
 			<p>...waiting</p>
 		{:then balance}
-			<p>TVT Balance: {balance}</p>
+			{#if balance === undefined}
+				<p>No balance here! Token address:</p>
+				<p>0x53c57e8E7d0B267209010ef385882718d4D08b26</p>
+			{:else}
+				<p>TVT Balance: {balance}</p>
+			{/if}
 		{:catch error}
-			<!-- <p style="color: red">{error.message}</p> -->
+			<p class="text-center">No balance!</p>
+			<br />
 		{/await}
 	</div>
-	<p class="pt-16 text-sm text-center">
-		Deployed to Ropsten Test Network...Just ask me for TVT and I will send you some! Works with
-		Metamask.
-	</p>
 	<br />
-	<p class=" text-xs text-center">Disclaimer: This is a demo. No real money is being exchanged.</p>
+	<p class="pt-8 text-sm text-center">
+		Deployed to Ropsten Test Network...Just ask me for TVT and I will send you some!
+	</p>
+	<p class=" text-center">Faucet construction in progress...🚧👷‍♂️🏗</p>
 </div>
