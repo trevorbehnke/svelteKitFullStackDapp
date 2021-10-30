@@ -4,12 +4,12 @@
 	import Token from '../artifacts/contracts/Token.sol/TrevToken.json';
 
 	// Local
-	const greeterAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
-	const tokenAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
+	// const greeterAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
+	// const tokenAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
 
 	// Ropsten
-	// const greeterAddress = '0x05Fc26470dA98455cc5C81A169Adc114930E4de0';
-	// const tokenAddress = '0x53c57e8E7d0B267209010ef385882718d4D08b26';
+	const greeterAddress = '0x05Fc26470dA98455cc5C81A169Adc114930E4de0';
+	const tokenAddress = '0x53c57e8E7d0B267209010ef385882718d4D08b26';
 
 	let greeting = "Hi, it's Trevor!";
 	let userAccount = '';
@@ -109,7 +109,11 @@
 		{#await promise}
 			<p>...waiting</p>
 		{:then message}
-			<p>Message: {message}</p>
+			{#if message === undefined}
+				<p>No message here!</p>
+			{:else}
+				<p>Message: {message}</p>
+			{/if}
 		{:catch error}
 			<p style="color: red">{error.message}</p>
 		{/await}
@@ -120,7 +124,7 @@
 		{:then balance}
 			<p>TVT Balance: {balance}</p>
 		{:catch error}
-			<p style="color: red">{error.message}</p>
+			<!-- <p style="color: red">{error.message}</p> -->
 		{/await}
 	</div>
 	<p class="pt-16 text-sm text-center">
