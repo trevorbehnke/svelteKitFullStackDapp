@@ -1,22 +1,17 @@
 <script>
-	// import './App.css';
-	// import { useState } from 'react';
 	import { ethers } from 'ethers';
 	import Greeter from '../artifacts/contracts/Greeter.sol/Greeter.json';
 	import Token from '../artifacts/contracts/Token.sol/TrevToken.json';
 
-	// Update with the contract address logged out to the CLI when it was deployed
 	// Local
 	const greeterAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
 	const tokenAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
+
 	// Ropsten
 	// const greeterAddress = '0x05Fc26470dA98455cc5C81A169Adc114930E4de0';
 	// const tokenAddress = '0x53c57e8E7d0B267209010ef385882718d4D08b26';
 
-	// store greeting in local state
-	// const [greeting, setGreetingValue] = useState();
-
-	let greeting = '';
+	let greeting = "Hi, it's Trevor!";
 	let userAccount = '';
 	let amount = null;
 
@@ -32,7 +27,6 @@
 			try {
 				const data = await contract.greet();
 				return data;
-				// console.log('msg: ', data);
 			} catch (err) {
 				console.log('Error: ', err);
 			}
@@ -53,8 +47,15 @@
 			const provider = new ethers.providers.Web3Provider(window.ethereum);
 			const contract = new ethers.Contract(tokenAddress, Token.abi, provider);
 			const balance = await contract.balanceOf(account);
-			console.log('Balance: ', balance.toString());
+			return balance.toString();
+			// console.log('Balance: ', balance.toString());
 		}
+	}
+
+	let balPromise = getBalance();
+
+	function handleGetBalance() {
+		balPromise = getBalance();
 	}
 
 	async function setGreeting() {
@@ -86,39 +87,46 @@
 </script>
 
 <div class="flex flex-col items-center justify-center">
-	<header class="">
-		<!-- <h1 class="pb-4 text-6xl text-center text-blue-500">Full Stack Dapp</h1>
-		<p class=" pb-4 text-5xl text-center text-blue-500">Trev Token</p> -->
-		<p class=" pb-1 text-2xl text-center text-blue-500">Guaranteed to 10x 🥳</p>
-		<p class=" pb-1 text-2xl text-center text-blue-500">Moonshot 🚀</p>
-		<p class=" pb-4 text-2xl text-center text-blue-500">So much wow 🤯</p>
-	</header>
+	<div class="wow pb-8">
+		<p class=" pb-1 ">Guaranteed to 10x 🥳</p>
+		<p class=" pb-1 ">Moonshot 🚀</p>
+		<p class=" pb-4 ">So much wow 🤯</p>
+	</div>
 	<main class=" flex items-center justify-center">
 		<div class="msg flex flex-col">
-			<button class="btn" on:click={handleFetchGreeting}>Get Message</button>
-
 			<button class="btn" on:click={setGreeting}>Set Message</button>
 			<input bind:value={greeting} placeholder="message..." />
+			<button class="btn" on:click={handleFetchGreeting}>Get Message</button>
 		</div>
-		<!-- <br /> -->
 		<div class="tokens flex flex-col">
-			<button class="btn" on:click={getBalance}> Get TVT Balance </button>
+			<button class="btn" on:click={handleGetBalance}> Get TVT Balance </button>
 			<button class="btn" on:click={sendCoins}> Send TVT </button>
 			<input bind:value={userAccount} placeholder="address..." />
 			<input bind:value={amount} placeholder="amount..." />
 		</div>
 	</main>
-	{#await promise}
-		<p>...waiting</p>
-	{:then message}
-		<p>Message: {message}</p>
-	{:catch error}
-		<p style="color: red">{error.message}</p>
-	{/await}
-	<p class="pt-32">
-		Deployed to Ropsten Test Network...Just ask me for TVT and I will send you some!
+	<div id="message">
+		{#await promise}
+			<p>...waiting</p>
+		{:then message}
+			<p>Message: {message}</p>
+		{:catch error}
+			<p style="color: red">{error.message}</p>
+		{/await}
+	</div>
+	<div id="amount">
+		{#await balPromise}
+			<p>...waiting</p>
+		{:then balance}
+			<p>TVT Balance: {balance}</p>
+		{:catch error}
+			<p style="color: red">{error.message}</p>
+		{/await}
+	</div>
+	<p class="pt-16 text-sm text-center">
+		Deployed to Ropsten Test Network...Just ask me for TVT and I will send you some! Works with
+		Metamask.
 	</p>
+	<br />
+	<p class=" text-xs text-center">Disclaimer: This is a demo. No real money is being exchanged.</p>
 </div>
-
-<style>
-</style>
