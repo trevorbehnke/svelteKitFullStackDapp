@@ -7,10 +7,11 @@
 
 	// Update with the contract address logged out to the CLI when it was deployed
 	// Local
-	// const greeterAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+	const greeterAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
+	const tokenAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
 	// Ropsten
-	const greeterAddress = '0x05Fc26470dA98455cc5C81A169Adc114930E4de0';
-	const tokenAddress = '0x53c57e8E7d0B267209010ef385882718d4D08b26';
+	// const greeterAddress = '0x05Fc26470dA98455cc5C81A169Adc114930E4de0';
+	// const tokenAddress = '0x53c57e8E7d0B267209010ef385882718d4D08b26';
 
 	// store greeting in local state
 	// const [greeting, setGreetingValue] = useState();
@@ -30,11 +31,18 @@
 			const contract = new ethers.Contract(greeterAddress, Greeter.abi, provider);
 			try {
 				const data = await contract.greet();
-				console.log('msg: ', data);
+				return data;
+				// console.log('msg: ', data);
 			} catch (err) {
 				console.log('Error: ', err);
 			}
 		}
+	}
+
+	let promise = fetchGreeting();
+
+	function handleFetchGreeting() {
+		promise = fetchGreeting();
 	}
 
 	async function getBalance() {
@@ -60,6 +68,7 @@
 			const transaction = await contract.setGreeting(greeting);
 			await transaction.wait();
 			fetchGreeting();
+			greeting = '';
 		}
 	}
 
@@ -76,17 +85,18 @@
 	}
 </script>
 
-<div class="flex flex-col min-h-screen items-center justify-center">
+<div class="flex flex-col items-center justify-center">
 	<header class="">
-		<h1 class="pb-4 text-6xl text-center text-blue-500">Full Stack Dapp</h1>
-		<p class=" pb-4 text-5xl text-center text-blue-500">Trev Token</p>
+		<!-- <h1 class="pb-4 text-6xl text-center text-blue-500">Full Stack Dapp</h1>
+		<p class=" pb-4 text-5xl text-center text-blue-500">Trev Token</p> -->
 		<p class=" pb-1 text-2xl text-center text-blue-500">Guaranteed to 10x 🥳</p>
 		<p class=" pb-1 text-2xl text-center text-blue-500">Moonshot 🚀</p>
 		<p class=" pb-4 text-2xl text-center text-blue-500">So much wow 🤯</p>
 	</header>
 	<main class=" flex items-center justify-center">
 		<div class="msg flex flex-col">
-			<button class="btn" on:click={fetchGreeting}>Get Message</button>
+			<button class="btn" on:click={handleFetchGreeting}>Get Message</button>
+
 			<button class="btn" on:click={setGreeting}>Set Message</button>
 			<input bind:value={greeting} placeholder="message..." />
 		</div>
@@ -98,8 +108,16 @@
 			<input bind:value={amount} placeholder="amount..." />
 		</div>
 	</main>
-	<p>Deployed to Ropsten Test Network...Just ask me for TVT and I will send you some!</p>
-	<p>Output logged to console.</p>
+	{#await promise}
+		<p>...waiting</p>
+	{:then message}
+		<p>Message: {message}</p>
+	{:catch error}
+		<p style="color: red">{error.message}</p>
+	{/await}
+	<p class="pt-32">
+		Deployed to Ropsten Test Network...Just ask me for TVT and I will send you some!
+	</p>
 </div>
 
 <style>

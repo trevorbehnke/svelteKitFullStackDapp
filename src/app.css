@@ -4,11 +4,11 @@
 @tailwind utilities;
 
 .msg > .btn {
-	@apply hover:bg-blue-400 hover:text-white hover:border-transparent border-2 border-blue-500 rounded-md mb-2 px-2 py-1 w-36;
+	@apply hover:bg-blue-400 hover:text-white hover:border-transparent border-2 border-blue-500 rounded-md mb-2 px-2 py-1 w-36 hover:shadow-lg;
 }
 
 .tokens > .btn {
-	@apply hover:bg-green-400 hover:text-white hover:border-transparent border-2 border-green-500 rounded-md mb-2 px-2 py-1 w-36;
+	@apply hover:bg-green-400 hover:text-white hover:border-transparent border-2 border-green-500 rounded-md mb-2 px-2 py-1 w-36 hover:shadow-lg;
 }
 
 input {
