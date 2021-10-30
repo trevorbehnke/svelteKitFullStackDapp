@@ -1,0 +1,29 @@
+/* Write your global styles here, in PostCSS syntax */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.msg > .btn {
+	@apply hover:bg-blue-400 hover:text-white hover:border-transparent border-2 border-blue-500 rounded-md mb-2 px-2 py-1 w-36;
+}
+
+.tokens > .btn {
+	@apply hover:bg-green-400 hover:text-white hover:border-transparent border-2 border-green-500 rounded-md mb-2 px-2 py-1 w-36;
+}
+
+input {
+	@apply rounded-md mb-2 px-2 py-1 w-36;
+}
+
+.msg,
+.tokens {
+	@apply px-2;
+}
+
+.msg > input {
+	@apply px-4 border-2 border-blue-500;
+}
+
+.tokens > input {
+	@apply px-4 border-2 border-green-500;
+}
