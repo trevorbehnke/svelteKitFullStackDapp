@@ -27,3 +27,7 @@ input {
 .tokens > input {
 	@apply px-4 border-2 border-green-500;
 }
+
+.wow > p {
+	@apply text-2xl text-center text-blue-500;
+}
