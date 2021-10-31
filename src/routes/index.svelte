@@ -4,12 +4,12 @@
 	import Token from '../artifacts/contracts/Token.sol/TrevToken.json';
 
 	// Local
-	// const greeterAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
-	// const tokenAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
+	const greeterAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
+	const tokenAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
 
 	// Ropsten
-	const greeterAddress = '0x05Fc26470dA98455cc5C81A169Adc114930E4de0';
-	const tokenAddress = '0x53c57e8E7d0B267209010ef385882718d4D08b26';
+	// const greeterAddress = '0x05Fc26470dA98455cc5C81A169Adc114930E4de0';
+	// const tokenAddress = '0x53c57e8E7d0B267209010ef385882718d4D08b26';
 
 	let greeting = '';
 	let userAccount = '';
@@ -47,7 +47,8 @@
 			const provider = new ethers.providers.Web3Provider(window.ethereum);
 			const contract = new ethers.Contract(tokenAddress, Token.abi, provider);
 			const balance = await contract.balanceOf(account);
-			return balance.toString();
+			const newBalance = balance / 1000000000000000000;
+			return newBalance.toString();
 			// console.log('Balance: ', balance.toString());
 		}
 	}
@@ -93,21 +94,21 @@
 	<p class="text-center">0x53c57e8E7d0B267209010ef385882718d4D08b26</p>
 	<br />
 	<main class=" flex items-center justify-center">
-		<div class="msg flex flex-col">
+		<!-- <div class="msg flex flex-col">
 			<button class="btn" on:click={setGreeting}>Set Message</button>
 			<input bind:value={greeting} placeholder="message..." />
 			<button class="btn" on:click={handleFetchGreeting}>Get Message</button>
-		</div>
+		</div> -->
 
 		<div class="tokens flex flex-col">
-			<button class="btn" on:click={handleGetBalance}> Get TVC Balance </button>
 			<button class="btn" on:click={sendCoins}> Send TVC </button>
 			<input bind:value={userAccount} placeholder="address..." />
 			<input bind:value={amount} placeholder="amount..." />
+			<button class="btn" on:click={handleGetBalance}> Get TVC Balance </button>
 		</div>
 	</main>
 	<br />
-	<div id="message">
+	<!-- <div id="message">
 		{#await msgPromise}
 			<p>...waiting</p>
 		{:then message}
@@ -119,15 +120,16 @@
 		{:catch error}
 			<p style="color: red">{error.message}</p>
 		{/await}
-	</div>
+	</div> -->
 
 	<div id="amount">
 		{#await balPromise}
 			<p>...waiting</p>
 		{:then balance}
 			{#if balance === undefined}
-				<p>No balance here! Token address:</p>
-				<p>0x53c57e8E7d0B267209010ef385882718d4D08b26</p>
+				<p>No balance!</p>
+				<!-- <p>No balance here! Token address:</p>
+				<p>0x53c57e8E7d0B267209010ef385882718d4D08b26</p> -->
 			{:else}
 				<p>TVT Balance: {balance}</p>
 			{/if}
@@ -140,5 +142,9 @@
 	<p class="pt-8 text-sm text-center">
 		Deployed to Ropsten Test Network...Just ask me for TVT and I will send you some!
 	</p>
-	<p class=" text-center">Faucet construction in progress...🚧👷‍♂️🏗</p>
+	<p class=" text-center">
+		<span class="text-4xl">🏗👷‍♂️🚧</span>
+		Faucet construction in progress...
+		<span class="text-4xl">🚧👷‍♂️🏗</span>
+	</p>
 </div>
